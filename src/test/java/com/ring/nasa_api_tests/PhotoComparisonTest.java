@@ -10,6 +10,8 @@ import org.junit.runners.JUnit4;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.ring.test_utils.RequestHelper.getEarthDay;
@@ -38,5 +40,23 @@ public class PhotoComparisonTest {
 
             assertTrue(errorMessage, ImageComparator.compareImage(solDayPhoto, earthDayPhoto));
         }
+    }
+
+    @Test
+    public void numberOfPhotosByCameraShouldNotBeTenTimesMoreThanOther() {
+        String[] cameras = {"FHAZ", "RHAZ", "MAST", "CHEMCAM", "MAHLI", "MARDI", "NAVCAM"};
+        List<Integer> photos = new ArrayList<>();
+
+        for (int i = 0; i < cameras.length; i++) {
+            photos.add(i, RequestHelper.getNumberOfPhotos(
+                    get(RequestHelper.getMarsPhotosUrlBySolDayByCamera(1000, cameras[i])).asString()));
+        }
+
+        String errorMessage = "Minimum photos: "
+                + Collections.min(photos)
+                + "\nMaximum photos: "
+                + Collections.max(photos);
+
+        assertTrue(errorMessage, Collections.min(photos) * 10 > Collections.max(photos));
     }
 }

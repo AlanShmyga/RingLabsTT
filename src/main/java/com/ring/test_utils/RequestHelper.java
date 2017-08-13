@@ -8,10 +8,14 @@ import java.util.regex.Pattern;
 public class RequestHelper {
 
     private static final String NASA_PHOTOS_LINK = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?";
-    private static final String API_KEY = "1xPyihUqjk9Lovkh7B7Ax2FnqS9O7eVxaHWaxAGV";
+    private static final String API_KEY = "DEMO_KEY";
 
     public static String getMarsPhotosUrlBySolDay(Integer solDay) {
         return NASA_PHOTOS_LINK + "sol=" + solDay + "&api_key=" + API_KEY;
+    }
+
+    public static String getMarsPhotosUrlBySolDayByCamera(Integer solDay, String camera) {
+        return NASA_PHOTOS_LINK + "sol=" + solDay + "&camera=" + camera + "&api_key=" + API_KEY;
     }
 
     public static String getMarsPhotosUrlByEarthDate(String earthDate) {
@@ -41,5 +45,17 @@ public class RequestHelper {
             return matcher.group(1);
         }
         throw new IllegalArgumentException("Response does not contain earth date!");
+    }
+
+    public static Integer getNumberOfPhotos(String response) {
+        Pattern pattern = Pattern.compile("\\{\"(.*?)\\}\\}");
+        Matcher matcher = pattern.matcher(response);
+        Integer photoNumber = 0;
+
+        while (matcher.find()) {
+            photoNumber++;
+        }
+
+        return photoNumber;
     }
 }

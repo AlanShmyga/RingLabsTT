@@ -10,8 +10,11 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 public class ImageComparator {
-    // This API will compare two image file //
-    // return true if both image files are equal else return false//**
+
+    static boolean compareImageMetadata(URL imageA, URL imageB) throws ImageProcessingException, IOException {
+        return ImageMetadataProcessor.readMetadata(imageA).equals(ImageMetadataProcessor.readMetadata(imageB));
+    }
+
     public static boolean compareImage(URL imageA, URL imageB) throws ImageProcessingException, URISyntaxException {
         try {
             // take buffer data from botm image files //

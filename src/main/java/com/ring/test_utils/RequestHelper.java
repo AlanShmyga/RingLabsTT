@@ -42,5 +42,4 @@ public class RequestHelper {
         }
         throw new IllegalArgumentException("Response does not contain earth date!");
     }
-
 }
